@@ -4,7 +4,7 @@ from marshmallow import ValidationError
 
 from app.funcs.functions import filter_data, map_data, read_file, sort_data, limit_data, unique_data
 from app.builder import build_query
-from app.model.model import RequestSchema
+from app.model.model import RequestSchema, BatchRequestSchema
 
 # creating blueprint
 main_blueprint = Blueprint('main_blueprint', __name__)
@@ -16,20 +16,32 @@ def perform_query():
     req_data = request.json
     # checking data correctness using marshmallow
     try:
-        RequestSchema().load(req_data)
+        BatchRequestSchema().load(req_data)
     except ValidationError as error:
         return jsonify(error.messages), 400
 
+    result = None
+    for query in req_data['queries']:
+        result = build_query(cmd=query['cmd'],
+                             value=query['value'],
+                             file_name=req_data['file_name'],
+                             data=result)
+    return jsonify(result)
 
-    first_result = build_query(cmd=req_data['cmd1'],
-                               value=req_data['value1'],
-                               file_name=req_data['file_name'],
-                               data=None)
 
-    result = build_query(cmd=req_data['cmd2'],
-                         value=req_data['value2'],
-                         file_name=req_data['file_name'],
-                         data=first_result)
+    # below skypro solution for bad api
+
+    # first_result = build_query(cmd=req_data['cmd1'],
+    #                            value=req_data['value1'],
+    #                            file_name=req_data['file_name'],
+    #                            data=None)
+    #
+    # result = build_query(cmd=req_data['cmd2'],
+    #                      value=req_data['value2'],
+    #                      file_name=req_data['file_name'],
+    #                      data=first_result)
+
+    # below my code, which i sent to check
 
     # check received data, applying relative function, forming data
     # if req_data['cmd1'] == 'filter':
@@ -64,4 +76,4 @@ def perform_query():
     #     output_data = unique_data(output_data)
 
     # return result of function applying
-    return jsonify(list(result)), 200
+    # return jsonify(list(result)), 200

@@ -31,5 +31,6 @@ def limit_data(data, value):
 
 
 # showing only unique data
-def unique_data(data):
+# args, kwargs добавляются чтобы соблюсти единообразие аргументов используемых функций
+def unique_data(data, *args, **kwargs):
     return set(data)

@@ -7,8 +7,11 @@ VALID_CMD = ('filter', 'map', 'sort', 'limit', 'unique')
 
 # creating schema according to required form
 class RequestSchema(Schema):
-    cmd1 = fields.Str(required=True, validate=validate.OneOf(VALID_CMD))
-    value1 = fields.Str(required=True)
-    cmd2 = fields.Str(required=True, validate=validate.OneOf(VALID_CMD))
-    value2 = fields.Str(required=True)
+    cmd = fields.Str(required=True, validate=validate.OneOf(VALID_CMD))
+    value = fields.Str(required=True)
+
+
+
+class BatchRequestSchema(Schema):
+    queries = fields.Nested(RequestSchema, many=True)
     file_name = fields.Str(required=True)
