@@ -14,27 +14,21 @@ main_blueprint = Blueprint('main_blueprint', __name__)
 def perform_query():
     # getting data from request
     req_data = request.json
-
     # checking data correctness using marshmallow
     try:
         RequestSchema().load(req_data)
     except ValidationError as error:
         return jsonify(error.messages), 400
 
-    # checking file existence, otherwise throwing exception
-    try:
-        data = read_file("".join(['data/', req_data['file_name']]))
-    except FileNotFoundError:
-        return 'File not found, check file path', 404
 
-    first_result = build_query(cmd=data['cmd1'],
-                               value=data['value1'],
-                               file_name=data['file_name'],
+    first_result = build_query(cmd=req_data['cmd1'],
+                               value=req_data['value1'],
+                               file_name=req_data['file_name'],
                                data=None)
 
-    result = build_query(cmd=data['cmd2'],
-                         value=data['value2'],
-                         file_name=data['file_name'],
+    result = build_query(cmd=req_data['cmd2'],
+                         value=req_data['value2'],
+                         file_name=req_data['file_name'],
                          data=first_result)
 
     # check received data, applying relative function, forming data
@@ -70,4 +64,4 @@ def perform_query():
     #     output_data = unique_data(output_data)
 
     # return result of function applying
-    return jsonify(list(output_data)), 200
+    return jsonify(list(result)), 200

@@ -3,8 +3,8 @@ from app.funcs.functions import filter_data, map_data, read_file, sort_data, lim
 CMD_TO_FUNCTIONS = {'filter': filter_data,
                     'map': map_data,
                     'sort':sort_data,
-                    'liit': limit_data,
-                    'unoque': unique_data}
+                    'limit': limit_data,
+                    'unique': unique_data}
 
 
 

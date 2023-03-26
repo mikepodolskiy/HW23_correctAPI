@@ -6,27 +6,27 @@ def read_file(filepath):
 
 
 # filtering data by value consistence
-def filter_data(data, val):
-    return filter(lambda x: val in x, data)
+def filter_data(data, value):
+    return filter(lambda x: value in x, data)
 
 
 # output one col acc to col number
-def map_data(data, val):
-    col = int(val)
+def map_data(data, value):
+    col = int(value)
     return map((lambda line: line.split(' ')[col]), data)
 
 
-# sorting data asc or desc form val argument
-def sort_data(data, val):
-    if val == 'asc':
+# sorting data asc or desc form value argument
+def sort_data(data, value):
+    if value == 'asc':
         return sorted(data, reverse=False)
-    if val == 'desc':
+    if value == 'desc':
         return sorted(data, reverse=True)
 
 
 # limiting data to show
-def limit_data(data, val):
-    limit = int(val)
+def limit_data(data, value):
+    limit = int(value)
     return list(data)[:limit]
 
 
